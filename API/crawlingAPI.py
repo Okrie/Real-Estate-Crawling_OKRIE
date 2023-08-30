@@ -1,3 +1,16 @@
+# 
+#   CrawlingAPI.py
+#   Flutter_R_Spring Project
+#
+#   부동산 실시간 예측을 위한 Python API 서버
+#   /get_road_name
+#   폐기된 도로명 주소를 받아 지번 주소로 보내줌
+#   
+#   /get_inter_rate
+#   한국은행에서 특정 년도 부터 현재 까지의 금리를 보내줌
+#
+#   Created by Okrie on 2023/08/17.
+
 from flask import Flask, request, Response
 import requests
 from bs4 import BeautifulSoup
@@ -36,6 +49,7 @@ def get_road_name():
 
 
 # 금리 크롤링
+# 한국은행에서 특정 년도 부터 현재 까지의 금리를 보내줌
 @app.route('/get_inter_rate', methods=['GET'])
 def get_inter_rate():
     url = f'https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643'

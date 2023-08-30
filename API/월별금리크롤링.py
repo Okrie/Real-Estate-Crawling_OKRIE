@@ -1,3 +1,18 @@
+# 
+#   월별금리크롤링.py
+#   Flutter_R_Spring Project
+#
+#   부동산 실시간 예측을 위한 Python API 서버
+#
+#   save_to_csv
+#   받은 정보를 합해 csv로 저장시켜주는 함수
+#   year, month, rate 컬럼으로 추가하여 저장
+#
+#   /get_inter_rate
+#   한국은행에서 특정 년도 부터 현재 까지의 금리를 보내줌
+#   
+#   Created by Okrie on 2023/08/15.
+
 from flask import Flask, request, Response
 import requests
 from bs4 import BeautifulSoup
@@ -6,9 +21,12 @@ import csv
 
 app = Flask(__name__)
 
+#   공백 제거
 def fix_whitespace(text):
     return ' '.join(text.split())
 
+#   받은 정보를 합해 csv로 저장시켜주는 함수
+#   year, month, rate 컬럼으로 추가하여 저장
 def save_to_csv(data):
     with open('금리.csv', 'w', newline='', encoding='utf-8') as csvfile:  # 인코딩을 cp949로 변경
         fieldnames = ['year', 'month', 'rate']
@@ -20,6 +38,7 @@ def save_to_csv(data):
             
 
 
+#   한국은행에서 특정 년도 부터 현재 까지의 금리를 크롤링 하여 csv로 저장, json으로 보내줌
 @app.route('/get_inter_rate', methods=['GET'])
 def get_inter_rate():
     url = f'https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643'

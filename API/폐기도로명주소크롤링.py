@@ -1,3 +1,22 @@
+# 
+#   폐기도로명주소크롤링.py
+#   Flutter_R_Spring Project
+#
+#   부동산 실시간 예측을 위한 Python API 서버
+#
+#   save_to_csv
+#   받은 정보를 합해 csv로 저장시켜주는 함수
+#   new_address 컬럼으로 추가하여 저장
+#
+#   /get_road_name
+#   폐기된 도로명 주소를 받아 지번 주소로 보내줌
+#   
+#   /get_road_names
+#   폐기된 도로명 주소를 받아 지번 주소를 추가하여 csv로 저장
+#
+#   Created by Okrie on 2023/08/14.
+
+
 from flask import Flask, request, Response
 import requests
 from bs4 import BeautifulSoup
@@ -6,9 +25,12 @@ import csv
 
 app = Flask(__name__)
 
+#   공백제거
 def fix_whitespace(text):
     return ' '.join(text.split())
 
+#   받은 정보를 합해 csv로 저장시켜주는 함수
+#   new_address 컬럼으로 추가하여 저장
 def save_to_csv(data):
     with open('결과_도로명주소.csv', 'w', newline='', encoding='cp949') as csvfile:  # 인코딩을 cp949로 변경
         fieldnames = ['new_address', 'road']
@@ -19,7 +41,7 @@ def save_to_csv(data):
             writer.writerow({'new_address': road_name})
             
 
-
+#   폐기된 도로명 주소를 받아 지번 주소로 보내줌
 @app.route('/get_road_name', methods=['GET'])
 def get_road_name():
     search_keyword = request.args.get('roadname')
@@ -44,6 +66,7 @@ def get_road_name():
     return jsonify({"error": "서버 에러"}), 500
 
 
+#   폐기된 도로명 주소를 받아 지번 주소를 추가하여 csv로 저장, json으로 값 보내줌
 @app.route('/get_road_names', methods=['GET'])
 def get_road_names():
     print("진행중")
